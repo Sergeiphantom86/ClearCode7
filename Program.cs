@@ -1,28 +1,41 @@
 class Player
 {
-    public int _age;
+    private readonly int _age;
+    private readonly Weapon _weapon;
+    private readonly Mover _mover;
 
-    public Player(string name, int age)
+    public Player(string name, int age, Weapon weapon, Mover mover)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Имя не может быть пустым", nameof(name));
 
         if (age < 0)
             throw new ArgumentOutOfRangeException(nameof(age), "Возраст не может быть отрицательным");
 
-        _age = age;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        _weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
+        _mover = mover ?? throw new ArgumentNullException(nameof(name));
 
+        _age = age;
     }
 
-    public string Name { get; private set; }
+    public string Name { get; }
+
+    private void Attack()
+    {
+        _weapon.Attack();
+    }
+
+    private void Walk()
+    {
+        _mover.Move();
+    }
 }
 
 class Weapon
 {
-    private int _damage;
-    public float _cooldown { get; private set; }
+    private readonly int _damage;
+    private readonly float _cooldown;
 
     public Weapon(int damage, float cooldown)
     {
@@ -49,7 +62,7 @@ class Weapon
 
 class Mover
 {
-    private float _speed;
+    private readonly float _speed;
 
     public Mover(float speed)
     {
